@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/index',function (){
+    return view('Index.index');
+});
+//商家简单表和详情表的增删该查
+Route::resource('shops','BusinessController');
