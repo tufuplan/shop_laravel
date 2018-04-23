@@ -6,10 +6,20 @@ use App\Business;
 use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class BusinessController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(
+            'guest',
+            [
+                'only'=>['create','store']
+            ]
+        );
+    }
     //显示商家注册表单
     public function create()
     {
@@ -53,11 +63,12 @@ class BusinessController extends Controller
 
         ]);
          $fileName = $request->file('logo')->store('public.logo');
+         $filePath = url(Storage::url($fileName));
 
             Business::create([
                 'account'=>$request->account,
                 'password'=>bcrypt($request->password),
-                'logo'=>$fileName,
+                'logo'=>$filePath,
                 'category_id'=>$request->category_id
             ]);
         $bao = $request->bao??0;
