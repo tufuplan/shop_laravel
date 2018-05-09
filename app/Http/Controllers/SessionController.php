@@ -61,6 +61,6 @@ class SessionController extends Controller
     {
         Auth::logout();
         session()->flash('success','您已成功注销');
-        return redirect('/login');
+        return redirect('/');
     }
 }
