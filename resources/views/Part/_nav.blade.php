@@ -18,16 +18,22 @@
                 <li><a href="{{route('shops.create')}}">成为商家</a></li>
                 <li><a href="{{route('fcategories.index')}}">菜品分类</a></li>
                 <li><a href="{{route('dishs.index')}}">菜品列表</a></li>
+                <li><a href='/activity'>平台活动</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">订单和统计<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href=""></a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
+                        <li><a href="/orders">订单列表</a></li>
+                        <li><a href="/dayWidthCount">根据时间范围查询订单量</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
+                        <li><a href="/dishCount">商家菜品销量统计</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#"></a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">抽奖活动<span class="caret"></span></a>
+                     <ul class="dropdown-menu">
+                        <li><a href="{{route('event.index')}}">查看抽奖活动列表</a></li>
                     </ul>
                 </li>
             </ul>
@@ -38,6 +44,7 @@
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">欢迎:</li>
                 @if(!\Illuminate\Support\Facades\Auth::user())
                 <li><a href="/login">登录</a></li>
                 @endif

@@ -147,22 +147,16 @@ class Food_CategoryController extends Controller
     public function destroy(Fcategory $fcategory)
     {
        $id =  Auth::user()->id;
-       $object =  DB::table('dishes')->where(
-            [
-                ['business_id',$id],
-                ['fcategory_id',$fcategory->id]
-
-                ]
-        )->get();
-       if($object->count>0){
-           //该分类下有菜品有餐馆不能删除
-         $result = ['result'=>'no'];
-         return json_encode($result);
-       }else{
-           $result = ['result'=>'yes'];
-//           $fcategory->delete();
-           return json_encode($result);
-       }
-
+ $res = DB::select("select * from dishes where business_id = $id and fcategory_id=$fcategory->id");
+        if($res==null){
+            //该分类下没有菜品可以删除
+            $result = ['result'=>'yes'];
+            $fcategory->delete();
+            return json_encode($result);
+        }
+        else{
+            $result = ['result'=>'no'];
+            return json_encode($result);
+        }
     }
 }

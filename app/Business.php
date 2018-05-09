@@ -8,7 +8,7 @@ class Business extends Authenticatable
 {
     //
     protected $fillable = [
-        'account', 'password', 'logo','category_id'
+        'account', 'password', 'logo','category_id','email'
     ];
 
 }

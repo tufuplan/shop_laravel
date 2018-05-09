@@ -28,6 +28,7 @@
             </tr>
         </table>
         @stop
+
 @section('js')
     <script>
         $(function () {
@@ -41,13 +42,11 @@
                         data:'_token={{csrf_token()}}',
                         success : function (msg) {
                             var str = JSON.parse(msg);
-                            console.debug(msg)
-//                            if(){
-//                                alert('分类下有菜品请先删除菜品不能删除');
-//                                return false;
-//                        }
-//
-//                         tr.fadeOut();
+                            if(str.result=='no'){
+                                alert('分类下有菜品请先删除菜品不能删除');
+                                return false;
+                        }
+                         tr.fadeOut();
 
                         }
                     })

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Business;
 use App\Category;
+use App\Mail;
+use App\UploadTool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -36,7 +38,10 @@ class BusinessController extends Controller
                 'required',
                 'min:3',
                 Rule::unique('businesses'),
-
+            ],
+            'email'=>[
+                'required',
+                Rule::unique('businesses'),
             ],
             'password'=>'required|confirmed|min:3',
             'logo'=>'required|image',
@@ -59,17 +64,21 @@ class BusinessController extends Controller
             'send_cost.required'=>'配送费不能为空',
             'send_cost.numeric'=>'输入数字作为配送费',
             'notice.min'=>'公告最少三个字符',
-            'discount.min'=>'优惠消息最少是三个字符'
-
+            'discount.min'=>'优惠消息最少是三个字符',
+            'email.required'=>'邮箱不能为空',
+            'email.unique'=>'邮箱已存在'
         ]);
-         $fileName = $request->file('logo')->store('public.logo');
+         $fileName = $request->file('logo')->store('public/logo');
+
          $filePath = url(Storage::url($fileName));
+         $path = UploadTool::upload($filePath);
 
             Business::create([
                 'account'=>$request->account,
                 'password'=>bcrypt($request->password),
-                'logo'=>$filePath,
-                'category_id'=>$request->category_id
+                'logo'=>$path,
+                'category_id'=>$request->category_id,
+                'email'=>$request->email
             ]);
         $bao = $request->bao??0;
         $zhun = $request->zhun??0;
@@ -92,9 +101,12 @@ class BusinessController extends Controller
                 'send_cost'=>$request->send_cost
             ]);
             //成功提示
+        $name =$request->account;
+        $email = $request->email;
+        $result = Mail::send($name,$email);
         session()->flash('success','申请成功,等待审核没审核后可以登录');
             //跳转
-        return redirect('/index');
+        return redirect()->route('login');
 
     }
 }

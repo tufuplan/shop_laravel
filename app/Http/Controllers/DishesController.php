@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Dish;
 use App\Fcategory;
+use App\UploadTool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -38,7 +39,7 @@ class DishesController extends Controller
             'name'=>'required|min:2',
             'price'=>'required|numeric',
             'fcategory'=>'required|numeric',
-            'cover'=>'required|image',
+            'cover'=>'required',
             'detail'=>'nullable|min:3',
         ],[
             'name.required'=>'菜名不能为空',
@@ -46,7 +47,6 @@ class DishesController extends Controller
             'price.required'=>'价格不能为空',
             'price.numeric'=>"价格必须是数字",
             'cover.required'=>'封面图不能空',
-            'cover.image'=>"封面图必须是一张图片",
             'detail.min'=>"描述最少要三个字符"
         ]);
         //数据验证完成
@@ -63,13 +63,13 @@ class DishesController extends Controller
             return redirect()->back()->withInput();
         }
         //保存添加
-        $fileName  = $request->file('cover')->store('public/dish');
-        $filePath = url(Storage::url($fileName));
+        $fileName  = $request->cover;
+        $aliyunpath  = UploadTool::upload($fileName);
         Dish::create(
             [
                 'name'=>$request->name,
                 'price'=>$request->price,
-                'cover'=>$filePath,
+                'cover'=>$aliyunpath,
                 'detail'=>$request->detail??'',
                 'fcategory_id'=>$request->fcategory,
                 'business_id'=>$id

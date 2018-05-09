@@ -10,6 +10,10 @@
                 <label for="exampleInputPassword1">密码</label>
                 <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
             </div>
+            <div class="form-group">
+                <label for="email">邮箱</label>
+                <input type="email" class="form-control"  name="email" id="email" placeholder="填写您的邮箱">
+            </div>
             {{csrf_field()}}
             <div class="form-group">
                 <label for="exampleInputPassword2">确认密码</label>
